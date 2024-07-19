@@ -1,0 +1,9 @@
+{
+
+  "DEFAULT_PATH": true,
+  "ENTRIES_PATH" : "my_entries",
+  "DB_HOST" : "",
+  "DB_USER" : "",
+  "DB_PASSWORD" : ""
+
+}

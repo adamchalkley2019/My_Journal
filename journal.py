@@ -4,16 +4,19 @@ from os import listdir
 import os 
 import random
 import journal_utils as j 
+import json
 
 class Journal:
 
-    def __init__(self,journal_name, dob, entries_path="my_entries"):
+    def __init__(self,journal_name, dob):
         self.journal_name = journal_name
-        # password : todo
         self.dob = dob
-        self.entries_path = entries_path # entries will be stored in this directory specified by the user
-        self.password = None
-        # TODO: read this data from a config file, have a default value 
+        config_file = open("config.json", "r")
+        config_json = json.load(config_file)
+        self.default_path = config_json["DEFAULT_PATH"] # boolean value: is using default path?
+        self.entries_path = config_json["ENTRIES_PATH"] # entries will be stored in this directory specified by the user
+        config_file.close()
+
 
     def list_entries(self):
         year = j.get_date_input('year')
@@ -29,7 +32,9 @@ class Journal:
             day = "0" + str(day) # put in correct format
 
         date_str = str(year) + '-' + str(month) + '-' + str(day)
-        my_path = ".//"+self.entries_path+"//"
+
+        if self.default_path:
+            my_path = ".//"+self.entries_path+"//"
 
         all_files = [f for f in listdir(my_path) if path.isfile(path.join(my_path, f))] # gets all entrys in directory
         relevent_files = []
@@ -91,11 +96,12 @@ class Journal:
                 date_now = datetime.datetime.now()
                 date_str = date_now.strftime("%Y-%m-%d %H:%M:%S")
                 date_str+=".txt"
+                file_path = self.entries_path+"//"+date_str
                 
-                with open(self.entries_path+"//"+date_str, "w") as f:
+                with open(file_path, "w") as f:
                     f.write(entry)
 
-                return
+                return # We can return as we have successfully created a new entry
             else:
                 entry = input("Please type your entry in now, press enter when finished :> ")
                 print()
