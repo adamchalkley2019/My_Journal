@@ -4,15 +4,15 @@ import sys
 
 ####################################################################################################################
 # TODO Tomorrow
-# create hash of the password with a hashing library maybe sha256
-# then store this hash in the database as password
-#
-# when reading the password we will also need to hash the inputted password then compare the two hashes for equality
+# Complete delete_user() method in journal.py
+# Create a seperate folder for each user [ username+date.txt]
+# Encrypt users entries using users password as the key
+# Allow the user the option to unecnrypt all the files[display wanrning: other users can view your entries]
 ####################################################################################################################
 
 def display_prompt(username):
     print("*" * 60)
-    print("\t" * 3, "WELCOME TO YOUR JOURNAL {}".format(username).upper(), "\t" * 3)
+    print("\t" * 2, "WELCOME TO YOUR JOURNAL {}".format(username).upper(), "\t" * 3)
     print()
     print(" \tpress 1 to create a new entry ")
     print(" \tpress 2 to select an existing entry ")
@@ -25,7 +25,7 @@ def display_prompt(username):
 
 def display_login():
     print("*" * 60)
-    print("\t" * 3, "WELCOME TO YOUR JOURNAL ", "\t" * 3)
+    print("\t" * 2, "WELCOME TO YOUR JOURNAL ", "\t" * 3)
     print()
     print(" \tpress 1 to log in")
     print(" \tpress 2 to create an account")
@@ -35,8 +35,9 @@ def display_login():
 
 def driver_logged_in(my_journal,username):
    
-    display_prompt(username)
+    
     while True:
+        display_prompt(username)
         choice = journal.j.get_input_prompt()
 
         if choice == 1:
@@ -56,9 +57,10 @@ def driver_logged_in(my_journal,username):
 def driver():
 
     my_journal = journal.Journal("Default","1999/09/09")
-    display_login()
+    
 
     while True:
+        display_login()
         choice = journal.j.get_input_prompt()
         
         if choice == 1:

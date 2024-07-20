@@ -157,6 +157,10 @@ class Journal:
         print()
         with open(self.entries_path+"//"+relevent_files[random_choice]) as f:
             data = f.read()
+            print()
+            print("*" * 60)
+            print("\t"*2, " Journal entry : ", relevent_files[random_choice])
+            print()
             print(data)
         print()
                 
@@ -178,3 +182,11 @@ class Journal:
             return True
         else:
             return False
+        
+    def delete_account():
+        # Ask user for password again
+        # Ask user if they are certain, i.e. this action is not reversible
+        # Delete entries for user
+        # Delete user from database
+        # prompt success and log user out
+        pass

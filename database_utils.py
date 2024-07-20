@@ -1,6 +1,7 @@
 from getpass import getpass
 from mysql.connector import connect, Error, cursor
 import json
+import hashlib
 
 #globals
 config_file = open("config.json", "r")
@@ -62,20 +63,15 @@ def login():
             query = "SELECT user_pass FROM users WHERE userName = {}".format(username_formated)
             db_cursor.execute(query)
             rows=db_cursor.fetchall()
-            correct_pass = rows[0][0] # password from database
+            correct_pass = rows[0][0] # hashed password from database 
             password = get_password() # get password inputted by user
+            password_input_hex = hashlib.sha256(password.encode('utf-8')).hexdigest() # convert to hash
             
-            return (True,username) if password == correct_pass else (False, "")
+            return (True,username) if password_input_hex == correct_pass else (False, "")
    except Error as e:
         print(e)
         raise Exception("Could not connect to database")
    
-   # Ask user for username,
-   # get username from database
-   # Ask user for password
-   # Get password from database
-
-   return True
 
 def create_account():
     # FIRST connect to database -> Done
@@ -102,10 +98,11 @@ def create_account():
                     break # username is available: break from loop
             # username is available
             password = get_password()
+            password_hex = hashlib.sha256(password.encode('utf-8')).hexdigest() # hash password before storing
             # TODO add more fields: DOB, account creation time, account creation date, gender, etc...
             username = "'{}'".format(username) # put in correct format for SQL query
-            password = "'{}'".format(password) # put in correct format for SQL query
-            query = "INSERT INTO users(userName,user_pass) VALUES({},{})".format(username, password)
+            password_hex = "'{}'".format(password_hex) # put in correct format for SQL query
+            query = "INSERT INTO users(userName,user_pass) VALUES({},{})".format(username, password_hex)
             db_cursor.execute(query)
             connection.commit() # commit changes to database through our connection object
             print()
