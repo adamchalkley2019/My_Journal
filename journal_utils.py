@@ -1,4 +1,4 @@
-def get_input_prompt():
+def get_input_prompt(max):
     """ Get a choice from the prompt menu from user """
 
     while True:
@@ -7,7 +7,7 @@ def get_input_prompt():
         except ValueError:
             print("Must provide a number")
         else:
-            if choice < 1 or choice > 5:
+            if choice < 1 or choice > max:
                 print("Please enter a valid choice")
             else:
                 return choice
@@ -82,7 +82,7 @@ def get_date_input(construct):
                 except ValueError:
                     print("please enter seconds in numerical format")
                 else:
-                    if choice > 0 and choice <= 59:
+                    if choice >= 0 and choice <= 59:
                         return choice
                     else:
                         print("invalid seconds")

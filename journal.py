@@ -14,7 +14,9 @@ class Journal:
         config_file = open("config.json", "r")
         config_json = json.load(config_file)
         self.default_path = config_json["DEFAULT_PATH"] # boolean value: is using default path?
-        self.entries_path = config_json["ENTRIES_PATH"] # entries will be stored in this directory specified by the user
+        self.entries_path = self.journal_name.lower() + '_' + config_json["ENTRIES_PATH"] # entries will be stored in this directory specified by the user
+        if not path.exists(self.entries_path):
+             os.mkdir(self.entries_path)
         config_file.close()
 
 
@@ -127,12 +129,18 @@ class Journal:
                 with open(self.entries_path+"//"+selected_file_name,"r") as f:
                     data = f.read()
                     print(data)
+                    print()
+                    print()
+                    continue_input = input("press any key to continue...")
             
         elif relevent_files_count > 1:
             print()
             with open(self.entries_path+"//"+selected_file_name, "r") as f:
                 data = f.read()
                 print(data)
+                print()
+                print()
+                continue_input = input("press any key to continue...")
         else:
             print("No such file found")
         print()
@@ -157,11 +165,10 @@ class Journal:
         print()
         with open(self.entries_path+"//"+relevent_files[random_choice]) as f:
             data = f.read()
-            print()
-            print("*" * 60)
+            print("\n","*" * 60)
             print("\t"*2, " Journal entry : ", relevent_files[random_choice])
-            print()
-            print(data)
+            print("\n",data, "\n \n")
+            continue_input = input("press any key to continue...")
         print()
                 
 
@@ -182,11 +189,3 @@ class Journal:
             return True
         else:
             return False
-        
-    def delete_account():
-        # Ask user for password again
-        # Ask user if they are certain, i.e. this action is not reversible
-        # Delete entries for user
-        # Delete user from database
-        # prompt success and log user out
-        pass
